@@ -111,7 +111,8 @@ angular.module('compasstic.controllers').controller('mainCtrl',
                 function getComments(post) {
                     console.info("Getting comments.");
                     $webServicesFactory.get("https://graph.facebook.com/"+post.id, {}, {
-                        fields: "comments.limit("+$scope.commentsLimit+")"+commentsAfter
+                        fields: "comments.limit("+$scope.commentsLimit+")"+commentsAfter,
+                        access_token: $scope.accessToken
                     }).then(
                       function (response) {
                           response =  response.comments;
