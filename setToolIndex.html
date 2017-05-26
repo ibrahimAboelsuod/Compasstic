@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Comapsstic</title>
+        <link href="css/mainStyle.css" rel="stylesheet">
+
+        <script src="js/angular.min.js"></script>
+
+
+        <script src="js/app.js"></script>
+
+        <script src="js/factories.js"></script>
+        <script src="js/controllers/mainCtrl.js"></script>
+
+    </head>
+    <body ng-app="compasstic" ng-controller="mainCtrl">
+        <div id="loader" ng-if="loading">
+            <img src="img/hourglass.svg">
+        </div>
+        <h1>Compasstic</h1>
+
+        <div id="tools">
+            <!--select category-->
+            <select class="pagesList tool" ng-model="selectedCategory">
+                <option value="_">Select a category</option>
+                <option ng-repeat="category in categories" value="{{category.id}}">{{category.name}}</option>
+            </select>
+            <!--Select page-->
+            <select class="pagesList tool" ng-model="selectedPage">
+                <option value="_">Select a page to crawl</option>
+                <option ng-repeat="page in pages" value="{{page.id}}">{{page.name}}</option>
+            </select>
+            <!--Set topic-->
+            <input type="text" class="tool" placeholder="Topic" ng-model="selectedTopic">
+
+            <button class="tool" ng-click="getComments()">Get Comments</button>
+            <button class="tool" ng-click="sendCommentsToDB()">Send Comments To DB</button>
+
+            <hr>
+
+            <button class="tool" ng-click="startClassing()">Start Classing</button>
+
+        </div>
+        <div id="result">
+        <p ng-repeat="comment in comments">
+            {{$index+1}}- {{comment.message}}<br>
+            <select ng-int="commentFeeling = '6'" ng-model="commentFeeling" ng-change="setFeeling(commentFeeling, comment.id)" >
+                <option value="0">Sadness</option>
+                <option value="1">Anger</option>
+                <option value="2">Disgust</option>
+                <option value="3">Fear</option>
+                <option value="4">Surprise</option>
+                <option value="5">Happiness</option>
+                <option value="6" selected>Neutral</option>
+            </select>
+            <button ng-click="postOpinion(comment.id)">Post</button>
+            <button ng-click="discardComment(comment.id)">Discard</button>
+
+        </p>
+
+    </div>
+
+    </body>
+</html>

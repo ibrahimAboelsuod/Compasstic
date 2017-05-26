@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Compasstic_V.3</title>
+
+    <link href="css/mainStyle.css" rel="stylesheet">
+
+    <script src="js/angular.min.js"></script>
+    <script src="lib/ngWebWorker/ng-webworker.js"></script>
+    <script src="js/svm.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/factories.js"></script>
+    <script src="js/controllers/prototype1Ctrl.js"></script>
+</head>
+<body  ng-app="compasstic" ng-controller="prototype1Ctrl">
+    <div id="loader" ng-if="loading">
+            <img src="img/hourglass.svg">
+    </div>
+    <h1>Compasstic</h1>
+    
+    <div id="tools">
+        <!--select category-->
+        <select class="pagesList tool" ng-model="selectedCategory" ng-change="categoryChanged(selectedCategory)">
+            <option value="_">Select a category</option>
+            <option ng-repeat="category in categories" value="{{category.id}}">{{category.name}}</option>
+        </select>
+        
+        <!--Select page-->
+        <select class="pagesList tool" ng-model="selectedPage">
+            <option value="_">Select a page to crawl</option>
+            <option ng-repeat="page in pages" value="{{page.id}}">{{page.name}}</option>
+        </select>
+        <!--Set topic-->
+        <input type="text" class="tool" placeholder="Topic" ng-model="selectedTopic">
+        <button class="tool" ng-click="svm.start()">Train (SVM)</button>
+        <button class="tool" ng-click="svm.test()">Test</button>
+        <hr>
+    </div>
+    <div id="result">
+        <div>
+            <p ng-repeat="comment in comments">
+                {{$index+1}}- {{comment.message}}<br>
+                Feeling: {{comment.class||'-'}}
+                <button ng-click="svm.predict(comment)">Class</button>
+
+            </p>
+        </div>
+    </div>
+</body>
+</html>

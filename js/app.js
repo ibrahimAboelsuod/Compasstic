@@ -7,6 +7,18 @@ angular.module('compasstic', ['compasstic.factories', 'compasstic.controllers'])
         "7976226799":{
             id:"7976226799",
             name:"The Daily Show"
+        },
+        "5281959998":{
+            id:"5281959998",
+            name:"The New York Times"
+        },
+        "10714086302":{
+            id:"10714086302",
+            name:"Saturday Night Live"
+        },
+        "114219621960016":{
+            id:"114219621960016",
+            name:"Samsung Mobile"   
         }
     }
 ).constant("$appDataProvider",{
