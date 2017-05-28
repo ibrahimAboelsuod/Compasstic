@@ -19,6 +19,10 @@ angular.module('compasstic', ['compasstic.factories', 'compasstic.controllers'])
         "114219621960016":{
             id:"114219621960016",
             name:"Samsung Mobile"   
+        },
+        "35313373389":{
+            id:"35313373389",
+            name:"Sony Mobil"   
         }
     }
 ).constant("$appDataProvider",{

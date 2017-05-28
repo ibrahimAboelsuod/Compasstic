@@ -369,7 +369,7 @@ angular.module('compasstic.controllers').controller('prototype1Ctrl',
                     for(var i=0; i<This.testSample.length; i++){
                         tempPredict = This.predict(This.testSample[i], true).split(' ');
                         for(var j=0; j<tempPredict.length; j++){
-                            if(Math.abs(tempPredict[j] - This.testLabels[i]) <= 1)
+                            if(Math.abs(tempPredict[j] - This.testLabels[i]) == 0)
                                 totalCorrect += 1;
                         }
                     }
