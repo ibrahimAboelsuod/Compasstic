@@ -1,0 +1,74 @@
+.invisibleHeader{
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+
+}
+[nav-bar="cached"] {
+    display: none !important;
+}
+
+
+
+.easeActive{
+    opacity: 1 !important;
+}
+
+
+#landingContent .scroll{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+#landingContent #landingLogo{
+    display: block;
+    margin: 0 auto;
+    opacity: 0;
+    margin-top: 250px;
+    transition: margin-top 1s linear, opacity 1s linear;
+}
+#landingContent .querySlider{
+    width: 350px;
+    height: 40px;
+    opacity: 0;
+    margin: 0 auto;
+    margin-top: 5px;
+    text-align: center;
+}
+#landingContent #landingLogo.easeActive {
+    margin-top:120px;
+}
+#landingContent .sliderInput{
+    display: inline-block;
+    height: 100%;
+}
+
+#landingContent .button-balanced.sliderInput{
+    margin: 0;
+    min-height: 20px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+#landingContent .button-assertive.sliderInput{
+    margin: 0;
+    min-height: 20px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+#landingContent input.sliderInput{
+    width: 180px;
+    margin-left: 30px;
+    border-bottom: solid 1px #33cd5f;
+    box-shadow: 0px 5px 8px 0px rgba(189,189,189,0.75);
+    text-align: center;
+}
+#landingContent input.sliderInput:focus{
+    background-color: #ececec;
+}
+#landingContent select.sliderInput{
+    width: 180px;
+    border: none;
+    border-bottom: solid 1px #33cd5f;
+    box-shadow: 0px 5px 8px 0px rgba(189,189,189,0.75);
+    text-align: center;
+}

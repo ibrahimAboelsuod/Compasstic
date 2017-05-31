@@ -17,28 +17,32 @@ angular.module('compasstic.controllers').controller('prototype1Ctrl',
                     name: "Person",
                     opinionsURL: "https://compasstic-c2156.firebaseio.com/peopleOpinions",
                     commentsURL: "https://compasstic-c2156.firebaseio.com/peopleComments",
-                    underreviewURL: "https://compasstic-c2156.firebaseio.com/peopleUnderreview"
+                    underreviewURL: "https://compasstic-c2156.firebaseio.com/peopleUnderreview",
+                    SVMModelURL: "https://compasstic-c2156.firebaseio.com/peopleSVMModel"
                 },
                 product: {
                     id: "product",
                     name: "Product",
                     opinionsURL: "https://compasstic-c2156.firebaseio.com/productOpinions",
                     commentsURL: "https://compasstic-c2156.firebaseio.com/productComments",
-                    underreviewURL: "https://compasstic-c2156.firebaseio.com/productUnderreview"
+                    underreviewURL: "https://compasstic-c2156.firebaseio.com/productUnderreview",
+                    SVMModelURL: "https://compasstic-c2156.firebaseio.com/productSVMModel"
                 },
                 place: {
                     id: "place",
                     name: "Place",
                     opinionsURL: "https://compasstic-c2156.firebaseio.com/placeOpinions",
                     commentsURL: "https://compasstic-c2156.firebaseio.com/placeComments",
-                    underreviewURL: "https://compasstic-c2156.firebaseio.com/placeUnderreview"
+                    underreviewURL: "https://compasstic-c2156.firebaseio.com/placeUnderreview",
+                    SVMModelURL: "https://compasstic-c2156.firebaseio.com/placeSVMModel"
                 },
                 event: {
                     id: "event",
                     name: "Event",
                     opinionsURL: "https://compasstic-c2156.firebaseio.com/eventOpinions",
                     commentsURL: "https://compasstic-c2156.firebaseio.com/eventComments",
-                    underreviewURL: "https://compasstic-c2156.firebaseio.com/eventUnderreview"
+                    underreviewURL: "https://compasstic-c2156.firebaseio.com/eventUnderreview",
+                    SVMModelURL: "https://compasstic-c2156.firebaseio.com/eventSVMModel"
                 }
                 
             };
@@ -46,6 +50,9 @@ angular.module('compasstic.controllers').controller('prototype1Ctrl',
 
             function isNumber(n) {
                 return !isNaN(parseFloat(n)) && isFinite(n);
+            }
+            function getRandomNumber(min, max) {
+                return Math.floor(Math.random() * (max - min)) + min;
             }
             function CompassticVector() {
                 var This = this;
@@ -161,12 +168,6 @@ angular.module('compasstic.controllers').controller('prototype1Ctrl',
                 this.sample = {};
                 this.features = {};
                 this.fTotal = 0;
-                this.maxFeatureValue = 0;
-                this.minFeatureValue = 0;
-                this.optDict = {};
-                this.optChoice = "_";
-                this.w = {};
-                this.b = 0;
                 this.classesLabel = [
                     "Sadness",
                     "Anger",
@@ -263,11 +264,33 @@ angular.module('compasstic.controllers').controller('prototype1Ctrl',
                         }
                     }
                     
+                    var data = This.data;
+                    var lables = This.dataLabels;
                     
-                    This.sample = This.data.slice(0, (This.data.length/100*70))//70%
-                    This.testSample = This.data.slice(This.data.length/100*70, This.data.length)//30%
-                    This.labels = This.dataLabels.slice(0, (This.dataLabels.length/100*70))//70%
-                    This.testLabels = This.dataLabels.slice(This.dataLabels.length/100*70, This.dataLabels.length)//30%
+                    /*This.data = [];
+                    This.dataLabels = [];
+                    var tempI = 0;
+                    
+                    while(data.length > 0){
+                        tempI = getRandomNumber(0, data.length);
+                        
+                        This.data.push(data.splice(tempI, 1));
+                        This.dataLabels.push(lables.splice(tempI, 1));
+                    }*/
+                        
+                    
+                    This.testSample = This.data.slice(0, This.data.length/100*30)//30%
+                    This.sample = This.data.slice(This.data.length/100*30, This.data.length)//70%
+                    
+                    This.testLabels = This.dataLabels.slice(0, This.dataLabels.length/100*30)//30%
+                    This.labels = This.dataLabels.slice(This.dataLabels.length/100*30, This.dataLabels.length)//70
+                    
+                    /*This.sample = This.data.slice(0, This.data.length/100*70);//70%
+                    This.testSample = This.data.slice(This.data.length/100*70, This.data.length);//30%
+
+                    This.labels = This.dataLabels.slice(0, This.dataLabels.length/100*70);//70%
+                    This.testLabels = This.dataLabels.slice(This.dataLabels.length/100*70, This.dataLabels.length);//30%*/
+                    
                 };
                 this.fit = function(){
                     $scope.loading = true;
@@ -290,7 +313,7 @@ angular.module('compasstic.controllers').controller('prototype1Ctrl',
                             This.sample,
                             This.libSVM[This.classesLabel[s]].labels, 
                             {
-                                C: 50,
+                                C: 500,
                                 kernel: 'linear'
                             }
                         );
@@ -375,8 +398,6 @@ angular.module('compasstic.controllers').controller('prototype1Ctrl',
                     }
                     
                     console.log("Test set accuracy: "+totalCorrect/This.testSample.length*100+"%");
-
-                    
                     
                     
                     
@@ -401,6 +422,38 @@ angular.module('compasstic.controllers').controller('prototype1Ctrl',
                     }
                     else
                         alert("Please make sure you selected a category and have stable internet connection.");*/
+                };
+                
+                this.updateModel = function(){
+                    var totalCorrect = 0;
+                    var tempPredict = [];
+                    for(var i=0; i<This.testSample.length; i++){
+                        tempPredict = This.predict(This.testSample[i], true).split(' ');
+                        for(var j=0; j<tempPredict.length; j++){
+                            if(Math.abs(tempPredict[j] - This.testLabels[i]) == 0)
+                                totalCorrect += 1;
+                        }
+                    }
+                    
+                    $webServicesFactory.put(
+                        $scope.categories[$scope.selectedCategory].SVMModelURL+".json",
+                        {},
+                        {
+                            features: This.features,
+                            Sadness: This.libSVM.Sadness.toJSON(),
+                            Anger:This.libSVM.Anger.toJSON(),
+                            Disgust:This.libSVM.Disgust.toJSON(),
+                            Fear:This.libSVM.Fear.toJSON(),
+                            Surprise:This.libSVM.Surprise.toJSON(),
+                            Happiness:This.libSVM.Happiness.toJSON(),
+                            Neutral:This.libSVM.Neutral.toJSON(),
+                            lastAccuracyRate: totalCorrect/This.testSample.length*100
+                        }
+                    ).then(
+                        function success(response){
+                            console.info(response);
+                        }
+                    );
                 };
 
 

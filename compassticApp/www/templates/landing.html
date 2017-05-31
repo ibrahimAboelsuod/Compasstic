@@ -1,0 +1,53 @@
+<ion-view view-title="Compasstic">
+    <ion-content id="landingContent" >
+        <img src="img/logo.png" id="landingLogo" ng-class="{'easeActive': isToAnimate}">
+        
+        <ion-slide-box class="querySlider" ng-class="{'easeActive': isToAnimate}"
+                       show-pager="false" 
+                       on-slide-changed="queryWezardSlider.inputSlideChanged($index);" 
+                       active-slide="queryWezardSlider.activeInputSlide" 
+                       ng-init="queryWezardSlider.lockSlide()">
+            <!--Topic-->
+            <ion-slide>
+                <input class="sliderInput" ng-class="{'easeActive': isToAnimate}" type="text" placeholder="Topic" ng-model="queryData.topic"><!--
+             --><button class="sliderInput button button-balanced ion-android-arrow-forward" 
+                        ng-click="queryWezardSlider.setInputSlide('next')"></button>
+            </ion-slide>
+            
+            <!--Category-->
+            <ion-slide>
+                <button class="sliderInput button button-assertive ion-android-arrow-back" 
+                        ng-click="queryWezardSlider.setInputSlide('previous')"></button><!--
+             --><select class="sliderInput" ng-model="queryData.category">
+                    <option value="_" selected disabled>{{queryData.topic}} is a/an ..</option>
+                    <option value="person">Person</option>
+                    <option value="product">Product</option>
+                    <option value="place">Place</option>
+                    <option value="event">Event</option>
+                </select><!--
+             --><button class="sliderInput button button-balanced ion-android-arrow-forward" 
+                        ng-click="queryWezardSlider.setInputSlide('next')"></button>
+            </ion-slide>
+            
+            <!--Source-->
+            <ion-slide>
+                <button class="sliderInput button button-assertive ion-android-arrow-back" 
+                        ng-click="queryWezardSlider.setInputSlide('previous')"></button><!--
+             --><select class="sliderInput" ng-model="queryData.source">
+                    <option value="_" selected disabled>Get related posts from ..</option>
+                    <option ng-repeat="page in pages" value="{{page.id}}">{{page.name}}</option>
+                </select><!--
+             --><button class="sliderInput button button-balanced ion-android-arrow-forward" 
+                        ng-click="queryWezardSlider.setInputSlide('next')"></button>
+            </ion-slide>
+            
+        </ion-slide-box>
+        
+        <!--
+        <div class="inputContainer" ng-class="{'easeActive': isToAnimate}">
+            <input ng-class="{'easeActive': isToAnimate}" type="text" placeholder="Topic"><!--
+            <button class="button button-balanced ion-android-arrow-forward"></button>
+        </div>
+        -->
+    </ion-content>
+</ion-view>
